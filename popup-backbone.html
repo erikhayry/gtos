@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="gToS" ng-csp>
+    <head>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body id="popup" data-language="en">
+
+    	<div id="main">
+		
+    	</div>		
+    	
+    	<script type="text/html" id="template-empty">
+			<div class="m-message">Empty list</div>
+		</script>
+
+    	<script type="text/html" id="template-list">
+			<div class="m-message"><%= message %></div>
+		</script>
+
+    	<script type="text/html" id="template-list-item">
+			<div class="m-song-item"><%= name %></div>
+		</script>
+
+		<script src="js/backbone.marionette/jquery.js"></script>
+		<script src="js/backbone.marionette/underscore.js"></script>
+		<script src="js/backbone.marionette/backbone.js"></script>
+		<script src="js/backbone.marionette/backbone.marionette.js"></script>		
+
+		<script src="js/backbone.marionette/app.js"></script>
+		
+		<script>
+			$(function () {
+				// start the app (defined in js/app.js)
+				gToE.start();
+			});
+		</script>
+    </body>
+</html>    
+
+

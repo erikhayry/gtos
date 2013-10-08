@@ -1,0 +1,29 @@
+{
+  "name": "Grooveshark to Spotify",
+  "version": "0.1",
+  "description": "Shows spotify links for songs played in grooveshark",
+  "background": { "scripts": ["js/background.js"] },
+  "page_action" :
+  {
+    "default_icon" : "icon-19-o.png",
+    "default_title" : "G to S",
+    "default_popup": "popup-angular.html"   
+  },
+  "icons" : {
+    "48" : "icon-48.png",
+    "128" : "icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>","http://*/*","https://*/*"],
+      "js": ["js/content.js"]
+    }
+  ],
+  "manifest_version": 2,
+  "permissions": [ 
+    "http://ws.spotify.com/*", 
+    "https://ws.spotify.com/*",
+    "http://grooveshark.com/*", 
+    "https://grooveshark.com/*",  
+    "tabs"]
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app="gToS" ng-csp>
+    <head>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body id="popup">
+		<div ng-controller="GToSCtrl">
+			<div class="m-message">{{status}}</div>
+			<div class="m-data" ng-show="gotData == true">
+	        	<div buttonbar></div>
+					<table class="m-link-list">
+						<thead>
+							<tr>
+								<th ng-class="getClass('artist')" ng-click="sort('artist')">Artist</th>
+								<th ng-class="getClass('track')" ng-click="sort('track')">Track</th>
+								<th ng-class="getClass('album')" ng-click="sort('album')">Album</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in data | startFrom:currentPage*pageSize | limitTo:pageSize">
+								<td><span ng-click="openLink(item.link)" data-href="{{item.link}}">{{item.artist}}</span></td>
+								<td><span ng-click="openLink(item.link)" data-href="{{item.link}}">{{item.track}}</span></td>
+								<td><span ng-click="openLink(item.link)" data-href="{{item.link}}">{{item.album}}</span></td>
+							</tr>
+						<tbody>
+					</table>    
+				<div buttonbar></div>
+			</div>
+		</div>
+    </body>
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/angular/angular-resource.min.js"></script>
+    <script src="js/angular/popup.js"></script>
+</html>
