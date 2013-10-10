@@ -23,11 +23,12 @@
   "web_accessible_resources": [
     // partials
     "/partials/buttonBar.html",
-    "/partials/dataTable.html"
+    "/partials/dataTable.html",
+    "/gtos.html",
+    "/js/gtos.js"
   ],
   "manifest_version": 2,
   "permissions": [
-    "spotify:track:*", 
     "http://ws.spotify.com/*", 
     "https://ws.spotify.com/*",
     "http://grooveshark.com/*", 

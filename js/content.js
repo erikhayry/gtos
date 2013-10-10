@@ -32,8 +32,9 @@
 							'</div>'
 							);
 
+
 		document.body.appendChild(_popupTmpl);
-		
+
 		App = angular.module('sToG', []);
 	}			
 
