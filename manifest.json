@@ -20,11 +20,18 @@
       "css" : ["css/message.css"]
     }
   ],
+  "web_accessible_resources": [
+    // partials
+    "/partials/buttonBar.html",
+    "/partials/dataTable.html"
+  ],
   "manifest_version": 2,
-  "permissions": [ 
+  "permissions": [
+    "spotify:track:*", 
     "http://ws.spotify.com/*", 
     "https://ws.spotify.com/*",
     "http://grooveshark.com/*", 
     "https://grooveshark.com/*",  
-    "tabs"]
+    "tabs"
+  ]
 }

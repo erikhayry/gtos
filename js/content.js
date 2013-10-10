@@ -1,23 +1,99 @@
 (function(){
-	var query = '';
+	var DebugColorString = 'color: blue;';	
 
-	var _getQuery = function(){
+	/*
+		Globals for content.js
+	 */
 
-		var newQuery = '',
+	var App, 
+		Query = '',
+		MessageBundle = {
+			'searching' : 'Searching for Spotify links',
+			'notFound' : 'No matching songs found'
+		},
+		PlayBtn = document.getElementById('play-pause');
 
-			//check if song is currently playing
-			song = document.querySelectorAll('#now-playing-metadata .song')[0], 
-			artist = document.querySelectorAll('#now-playing-metadata .artist')[0];
+	var StringToNode = function(tmplString){
+		var _div = document.createElement('div');
+		_div.innerHTML = tmplString;
+		return _div.childNodes[0];
+	};
+
+	var Init = function(){
+		var _popupTmpl = StringToNode(
+							'<div ng-app="sToG" ng-csp ng-controller="messageHolder" class="gToS">' +
+								'<div ng-show="data.length > 0">' + 
+									'<div buttonbar></div>' + 
+									'<div datatable></div>' +
+									'<div buttonbar></div>' +
+								'</div>' +
+								'<div ng-show="data.length == 0" ng-bind="status">' +
+								'</div>' +		 
+							'</div>'
+							);
+
+		document.body.appendChild(_popupTmpl);
+		
+		App = angular.module('sToG', []);
+	}			
+
+	Init();
+
+	/*
+		services
+	 */
+
+	App.factory('spotifyFactory', function($http){
+		var _factory = {},
+			_urlBase = 'http://ws.spotify.com/search/1/track.json?q=';
+		/*
+			info: Object
+				limit: 100
+				num_results: 504
+				offset: 0
+				page: 1
+				query: "Pixies"
+				type: "track"
+			tracks: Array[100]
+				0: Object
+					album: Object
+					artists: Array[1]
+					external-ids: Array[1]
+					href: "spotify:track:5BP0oaQ1VhuaznT77CBXQp"
+					length: 231.931
+					name: "Where Is My Mind?"
+					popularity: "0.74"
+					track-number: "14"
+				...
+			...		
+		 */
 			
+		_factory.getData = function(query){
+			return $http.get(_urlBase + query);
+		}
+
+		return _factory;
+	});
+
+	App.factory('queryFactory', function(){
+		var _factory = {};
+
+		_factory.getQuery = function(){
+
+			var _newQuery = '',
+
+				//check if song is currently playing
+				_song = document.querySelectorAll('#now-playing-metadata .song')[0], 
+				_artist = document.querySelectorAll('#now-playing-metadata .artist')[0];
+				
 			//Pixies 
-			if(artist && artist.innerText) newQuery += artist.innerText.split(' ').join('+') + '+'; //Pixies+
+			if(_artist && _artist.innerText) _newQuery += _artist.innerText.split(' ').join('+') + '+'; //Pixies+
+			
 			//Trompe le Monde Pixies 
-			if(song && song.innerText) newQuery += song.innerText.split(' ').join('+'); //Pixies+Trompe+le+Monde
-
-
+			if(_song && _song.innerText) _newQuery += _song.innerText.split(' ').join('+'); //Pixies+Trompe+le+Monde
 			
 			//no song is playing. Try to get data from url instead
-			if(!newQuery){
+			if(!_newQuery){
 				/*
 					search urls : http://grooveshark.com/#!/search?q=pj+thom,
 								  http://grooveshark.com/#!/search/song?q=pj+harvey+thom+yorke
@@ -27,120 +103,172 @@
 					profile url : http://grooveshark.com/#!/profile/Pixies/22180913
 
 					album url : http://grooveshark.com/#!/album/Trompe+Le+Monde/1261426
-
 				 */
 
-				var url = window.location.href,
-					type = '';
+				var _url = window.location.href,
+					_searchUrl = '#!/search',
+					_trackUrl = '/s/',
+					_profileUrl = '#!/profile/',
+					_albumUrl = '#!/album/';
 
 				// /#!/search?q=pj+thom	
-				if(url.indexOf('#!/search') > -1){
-					var queries = url.slice(url.indexOf('?') + 1).split('&'); //['q=pj+thom']
+				if(_url.indexOf(_searchUrl) > -1){
+					var queries = _url.slice(_url.indexOf('?') + 1).split('&'); //['q=pj+thom']
 					for (var i = 0; i < queries.length; i++) {
 					  	var indexOfQ = queries[i].indexOf('q=');
 						if(indexOfQ > -1){ //'q=pj+thom'
-							newQuery = queries[i].substring(indexOfQ + 2); //pj+thom
+							_newQuery = queries[i].substring(indexOfQ + 2); //pj+thom
 					  	}  
 					};					 
 				}
 
 				// /s/Where+Is+My+Mind/3SG5Ua?src=5 or /#!/profile/Pixies/22180913 or /#!/album/Trompe+Le+Monde/1261426
-				else if((url.indexOf('/s/') > -1) || (url.indexOf('#!/profile/') > -1) || (url.indexOf('#!/album/') > -1)){
-					if(url.indexOf('/s/') > -1) var hash = '/s/';
-					else if(url.indexOf('#!/profile/') > -1) var hash = '#!/profile/';
-					else var hash = '#!/album/'; 	
+				else if((_url.indexOf(_trackUrl) > -1) || (_url.indexOf(_profileUrl) > -1) || (_url.indexOf(_albumUrl) > -1)){
+					if(_url.indexOf(_trackUrl) > -1) var hash = _trackUrl;
+					else if(_url.indexOf(_profileUrl) > -1) var hash = _profileUrl;
+					else var hash = _albumUrl; 	
 
-					var indexOfHash = url.indexOf(hash),
-						indexOfLastSlash = url.lastIndexOf('/');		
+					var indexOfHash = _url.indexOf(hash),
+						indexOfLastSlash = _url.lastIndexOf('/');		
 					
-					newQuery = url.substring(indexOfHash + hash.length, indexOfLastSlash); // Where+Is+My+Mind or Pixies or Trompe+Le+Monde
+					_newQuery = _url.substring(indexOfHash + hash.length, indexOfLastSlash); // Where+Is+My+Mind or Pixies or Trompe+Le+Monde
 				}
 			}
 
-			return newQuery; 
-	},
-
-	_stringToNode = function(tmplString){
-		var div = document.createElement('div');
-		div.innerHTML = tmplString;
-		return div.childNodes[0];
-	};
-
-
-
-	var popUpTmpl = _stringToNode(
-								'<div ng-app="sToG" ng-csp ng-controller="messageHolder">' + 
-									'{{message}}' +
-								'</div>'
-								);
-
-	var init = function(){
-
-		document.body.appendChild(popUpTmpl);
-
-	}			
-
-
-	init();
-
-	var App = angular.module('sToG', []);
-
-/*	App.factory('spotifyFactory', function(){
-		var factory = {},
-
-		_getData = function(){
-			$http.get('http://ws.spotify.com/search/1/track.json?q=' + query).success(function(data) {
-			});	
+			return _newQuery; 
 		}
 
+		return _factory;
+	})
 
-
-		return factory;
-
-	});*/
-
-	App.controller('messageHolder', function($scope, $http){
-		var interval = setInterval(function(){
-			var newQuery = _getQuery();
-			if(newQuery !== query){
-				query = newQuery;
-				console.log(query)
-				$http.get('http://ws.spotify.com/search/1/track.json?q=' + query).success(function(data) {
-					/*
-						info: Object
-							limit: 100
-							num_results: 504
-							offset: 0
-							page: 1
-							query: "Pixies"
-							type: "track"
-						tracks: Array[100]
-							0: Object
-								album: Object
-								artists: Array[1]
-								external-ids: Array[1]
-								href: "spotify:track:5BP0oaQ1VhuaznT77CBXQp"
-								length: 231.931
-								name: "Where Is My Mind?"
-								popularity: "0.74"
-								track-number: "14"
-					 */
-					console.log(data);
-					
-				});
-				$scope.$apply(function(){
-					$scope.message = query;
-				})
-			}
-		}, 1000);
+	/*
+		filters
+	 */
+	
+	App.filter('startFrom', function() {
+	    return function(input, start) {
+	        start = +start; //parse to int
+	        return input.slice(start);
+	    }
 	});
+
+	/*
+		directives
+	 */
+
+	App.directive('buttonbar', function() {
+		return {
+		    restrict: 'A',
+		    replace: true,
+		    templateUrl: chrome.extension.getURL('/partials/buttonBar.html')
+		  }
+	});
+
+	App.directive('datatable', function() {
+		return {
+		    restrict: 'A',
+		    replace: true,
+		    templateUrl: chrome.extension.getURL('/partials/dataTable.html')
+		  }
+	});
+
+	/*
+		controllers
+	 */
+
+	App.controller('messageHolder', function($scope, $http, spotifyFactory, queryFactory){
+		var _noTracksFound = function(){
+				$scope.data = [];
+				$scope.message = MessageBundle.notFound;
+			},
+			_getData = function(query){
+				spotifyFactory.getData(query)
+					.success(function(data){
+
+						// get essential data
+						if(data.tracks.length > 0){
+							var _newData = [];
+			                
+				            for(var i = 0; i < data.tracks.length; i++){
+								var _item = {artist: data.tracks[i].artists[0].name, 
+											track : data.tracks[i].name, 
+											album : data.tracks[i].album.name, 
+											link: data.tracks[i].href}
+
+								_newData.push(_item);
+				            }
+				            $scope.data = _newData;
+				            $scope.message = MessageBundle.searching;			            
+			            }
+
+			            else{		            	
+			            	//no tracks found
+			            	_noTracksFound();
+			            }
+						
+					})
+					.error(function(error){
+						_noTracksFound();
+					})
+		},
+
+		// initialize values for controller
+		_init = function(){		    
+		    // data
+		    $scope.status = MessageBundle.searching;
+		   	$scope.data = [];
+
+		   	// values for pagination
+		    $scope.currentPage = 0;
+		    $scope.pageSize = 10;
+
+			// keep checking if the query has changed
+			setInterval(function(){
+				//get query
+				var _newQuery = queryFactory.getQuery();
+
+				//if query has changed update it and get new data
+				if(_newQuery !== Query){
+					Query = _newQuery;
+					console.log('%cNew query: ' + Query, DebugColorString)
+					_getData(Query);				
+				}
+			}, 1000);	    
+		};		
+
+		_init();
+
+		/*
+			$scope functions
+		 */
+
+	    $scope.numberOfPages = function(){
+	        return Math.ceil($scope.data.length/$scope.pageSize);                
+	    }
+
+	    // helper function for adding active class to column titles
+	    $scope.isActive = function(typeStrg){
+	    	var className = '';
+	    	if(typeStrg && typeStrg === $scope.predicate) className = 'is-active';
+	    	return className;
+	    }
+
+	    $scope.openLink = function(link, data){
+	    	if(PlayBtn && PlayBtn.className.indexOf('playing') > -1) PlayBtn.click();
+			var _newWindow=window.open(link,'','width=200,height=100')
+			_newWindow.document.write('<p>' + data.track + ' - ' + data.artist + ' opened in spotify</p><button onclick="window.close()">Close window</button>');
+			_newWindow.focus();    
+		}
+	});
+
+	/*
+		config
+	 */
 
 	App.config(function($httpProvider){
     	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 	});
 
-	angular.bootstrap(popUpTmpl, ['sToG']);
-
-
+	//angular.bootstrap(Popup_Tmpl, ['sToG']);
 
 })();

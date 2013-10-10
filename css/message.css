@@ -1,0 +1,11 @@
+/* line 1, ../sass/message.scss */
+.gToS {
+  position: absolute;
+  background-color: #FFF;
+  padding: 10px;
+  box-sizing: border-box;
+}
+/* line 7, ../sass/message.scss */
+.gToS .is-active {
+  color: red;
+}

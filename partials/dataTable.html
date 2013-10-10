@@ -1,0 +1,31 @@
+<table class="m-link-list" ng-show="data.length > 0">
+	<thead>
+		<tr>
+			<th>
+				Artist
+				<button class="m-link-list-heading" ng-click="predicate = 'artist'; reverse=false;" ng-class="isActive('artist')">&#x25B2</button>
+				<button class="m-link-list-heading" ng-click="predicate = '-artist'; reverse=false" ng-class="isActive('-artist')">&#x25BC</button>
+				<button class="m-link-list-heading" ng-click="predicate = ''" ng-class=("isActive('')")>reset</button>
+			</th>
+			<th>
+				Track
+				<button class="m-link-list-heading" ng-click="predicate = 'track'; reverse=false" ng-class="isActive('track')">&#x25B2</button>
+				<button class="m-link-list-heading" ng-click="predicate = '-track'; reverse=false" ng-class="isActive('-track')">&#x25BC</button>
+				<button class="m-link-list-heading" ng-click="predicate = ''" ng-class=("isActive('')")>reset</button>
+			</th>
+			<th>
+				Album
+				<button class="m-link-list-heading" ng-click="predicate = 'album'; reverse=false" ng-class="isActive('album')">&#x25B2</button>
+				<button class="m-link-list-heading" ng-click="predicate = '-album'; reverse=false" ng-class="isActive('-album')">&#x25BC</button>
+				<button class="m-link-list-heading" ng-click="predicate = ''" ng-class="isActive('')">reset</button>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="item in data | startFrom:currentPage*pageSize | limitTo:pageSize | orderBy:predicate:reverse">
+			<td><a ng-click="openLink(item.link, {track: item.track, artist: item.artist})">{{item.artist}}</a></td>
+			<td><a ng-click="openLink(item.link, {track: item.track, artist: item.artist})">{{item.track}}</a></td>
+			<td><a ng-click="openLink(item.link, {track: item.track, artist: item.artist})">{{item.album}}</a></td>
+		</tr>
+	<tbody>
+</table> 
