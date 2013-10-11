@@ -1,31 +1,32 @@
-<table class="m-link-list" ng-show="data.length > 0">
+<table class="m-data-table" ng-show="data.length > 0">
 	<thead>
 		<tr>
-			<th>
-				Artist
-				<button class="m-link-list-heading" ng-click="predicate = 'artist'; reverse=false;" ng-class="isActive('artist')">&#x25B2</button>
-				<button class="m-link-list-heading" ng-click="predicate = '-artist'; reverse=false" ng-class="isActive('-artist')">&#x25BC</button>
-				<button class="m-link-list-heading" ng-click="predicate = ''" ng-class=("isActive('')")>reset</button>
+			<th class="m-data-table-heading">
+				<span ng-click="predicate = ''" ng-class="isActive('')">Artist</span>
+				<button class="m-data-table-heading-btn" ng-click="predicate = 'artist'; reverse=false;" ng-class="isActive('artist')">&#x25B2</button>
+				<button class="m-data-table-heading-btn" ng-click="predicate = '-artist'; reverse=false" ng-class="isActive('-artist')">&#x25BC</button>
 			</th>
-			<th>
-				Track
-				<button class="m-link-list-heading" ng-click="predicate = 'track'; reverse=false" ng-class="isActive('track')">&#x25B2</button>
-				<button class="m-link-list-heading" ng-click="predicate = '-track'; reverse=false" ng-class="isActive('-track')">&#x25BC</button>
-				<button class="m-link-list-heading" ng-click="predicate = ''" ng-class=("isActive('')")>reset</button>
+			<th class="m-data-table-heading">
+				<span ng-click="predicate = ''" ng-class="isActive('')">Track</span>
+				<button class="m-data-table-heading-btn" ng-click="predicate = 'track'; reverse=false" ng-class="isActive('track')">&#x25B2</button>
+				<button class="m-data-table-heading-btn" ng-click="predicate = '-track'; reverse=false" ng-class="isActive('-track')">&#x25BC</button>
 			</th>
-			<th>
-				Album
-				<button class="m-link-list-heading" ng-click="predicate = 'album'; reverse=false" ng-class="isActive('album')">&#x25B2</button>
-				<button class="m-link-list-heading" ng-click="predicate = '-album'; reverse=false" ng-class="isActive('-album')">&#x25BC</button>
-				<button class="m-link-list-heading" ng-click="predicate = ''" ng-class="isActive('')">reset</button>
+			<th class="m-data-table-heading">
+				<span ng-click="predicate = ''" ng-class="isActive('')">Album</span>
+				<button class="m-data-table-heading-btn" ng-click="predicate = 'album'; reverse=false" ng-class="isActive('album')">&#x25B2</button>
+				<button class="m-data-table-heading-btn" ng-click="predicate = '-album'; reverse=false" ng-class="isActive('-album')">&#x25BC</button>
 			</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="item in data | startFrom:currentPage*pageSize | limitTo:pageSize | orderBy:predicate:reverse">
-			<td><a ng-click="openLink(item.link, {track: item.track, artist: item.artist})">{{item.artist}}</a></td>
-			<td><a ng-click="openLink(item.link, {track: item.track, artist: item.artist})">{{item.track}}</a></td>
-			<td><a ng-click="openLink(item.link, {track: item.track, artist: item.artist})">{{item.album}}</a></td>
+		<tr 
+			ng-repeat="item in data | orderBy:predicate:reverse | startFrom:currentPage*pageSize | limitTo:pageSize" 
+			ng-click="openLink(item.link, {track: item.track, artist: item.artist})"
+			class="m-data-table-track"
+		>
+			<td>{{item.artist}}</td>
+			<td>{{item.track}}</td>
+			<td>{{item.album}}</td>
 		</tr>
 	<tbody>
 </table> 

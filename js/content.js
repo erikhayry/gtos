@@ -1,4 +1,5 @@
 (function(){
+	// make debug messages stand out from grooveshark errors and logs
 	var DebugColorString = 'color: blue;';	
 
 	/*
@@ -6,11 +7,7 @@
 	 */
 
 	var App, 
-		Query = '',
-		MessageBundle = {
-			'searching' : 'Searching for Spotify links',
-			'notFound' : 'No matching songs found'
-		},
+		Query = ' ',
 		PlayBtn = document.getElementById('play-pause');
 
 	var StringToNode = function(tmplString){
@@ -21,7 +18,8 @@
 
 	var Init = function(){
 		var _popupTmpl = StringToNode(
-							'<div ng-app="sToG" ng-csp ng-controller="messageHolder" class="gToS">' +
+							'<div id="gToS" ng-app="sToG" ng-csp ng-controller="MessageHolderCtrl" class="layout-box" ng-class="isVisibleClass">' +
+								'<div class="m-toggler" ng-class="state" ng-click="toggleVisibility()">&#9835</div>' +
 								'<div ng-show="data.length > 0">' + 
 									'<div buttonbar></div>' + 
 									'<div datatable></div>' +
@@ -31,7 +29,6 @@
 								'</div>' +		 
 							'</div>'
 							);
-
 
 		document.body.appendChild(_popupTmpl);
 
@@ -43,8 +40,13 @@
 	/*
 		services
 	 */
+	
+	App.constant('MessageBundle', {
+		searching : 'Searching for Spotify songs',
+		notFound : 'No matching Spotify songs found'
+	});
 
-	App.factory('spotifyFactory', function($http){
+	App.factory('SpotifyFactory', function($http){
 		var _factory = {},
 			_urlBase = 'http://ws.spotify.com/search/1/track.json?q=';
 		/*
@@ -76,7 +78,7 @@
 		return _factory;
 	});
 
-	App.factory('queryFactory', function(){
+	App.factory('QueryFactory', function(){
 		var _factory = {};
 
 		_factory.getQuery = function(){
@@ -177,13 +179,15 @@
 		controllers
 	 */
 
-	App.controller('messageHolder', function($scope, $http, spotifyFactory, queryFactory){
+	App.controller('MessageHolderCtrl', function($scope, $http, SpotifyFactory, QueryFactory, MessageBundle){
 		var _noTracksFound = function(){
 				$scope.data = [];
-				$scope.message = MessageBundle.notFound;
+				$scope.status = MessageBundle.notFound;
+				$scope.state = 'is-no-success';
 			},
 			_getData = function(query){
-				spotifyFactory.getData(query)
+				$scope.state = 'is-searching';
+				SpotifyFactory.getData(query)
 					.success(function(data){
 
 						// get essential data
@@ -199,7 +203,8 @@
 								_newData.push(_item);
 				            }
 				            $scope.data = _newData;
-				            $scope.message = MessageBundle.searching;			            
+				            $scope.message = MessageBundle.searching;
+				            $scope.state = 'is-success';			            
 			            }
 
 			            else{		            	
@@ -223,10 +228,13 @@
 		    $scope.currentPage = 0;
 		    $scope.pageSize = 10;
 
+		    $scope.state = 'is-searching';
+		    $scope.isVisibleClass = 'is-hidden';
+
 			// keep checking if the query has changed
 			setInterval(function(){
 				//get query
-				var _newQuery = queryFactory.getQuery();
+				var _newQuery = QueryFactory.getQuery();
 
 				//if query has changed update it and get new data
 				if(_newQuery !== Query){
@@ -256,9 +264,29 @@
 
 	    $scope.openLink = function(link, data){
 	    	if(PlayBtn && PlayBtn.className.indexOf('playing') > -1) PlayBtn.click();
-			var _newWindow=window.open(link,'','width=200,height=100')
-			_newWindow.document.write('<p>' + data.track + ' - ' + data.artist + ' opened in spotify</p><button onclick="window.close()">Close window</button>');
+			var _newWindow = window.open(link,'','width=200,height=100');
+			
+			var _fileref = _newWindow.document.createElement("link");
+			_fileref.setAttribute("rel", "stylesheet");
+			_fileref.setAttribute("type", "text/css");
+			_fileref.setAttribute("href", chrome.extension.getURL('/css/popup.css'));
+
+			_newWindow.document.getElementsByTagName("head")[0].appendChild(_fileref);
+
+			var _popupTmpl = StringToNode(
+								'<div>' +
+									'<p>' + data.track + ' - ' + data.artist + ' opened in spotify</p>' +
+									'<button onclick="window.close()">Close window</button>' +
+								'</div>'	
+							);
+
+			_newWindow.document.body.appendChild(_popupTmpl);
 			_newWindow.focus();    
+		}
+
+		$scope.toggleVisibility = function(){			
+			if($scope.isVisibleClass === 'is-hidden') $scope.isVisibleClass = 'is-visible';
+			else $scope.isVisibleClass = 'is-hidden';
 		}
 	});
 
@@ -269,7 +297,4 @@
 	App.config(function($httpProvider){
     	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 	});
-
-	//angular.bootstrap(Popup_Tmpl, ['sToG']);
-
 })();
