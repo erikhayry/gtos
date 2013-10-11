@@ -20,13 +20,13 @@
 		var _popupTmpl = StringToNode(
 							'<div id="gToS" ng-app="sToG" ng-csp ng-controller="MessageHolderCtrl" class="layout-box" ng-class="isVisibleClass">' +
 								'<div class="m-toggler" ng-class="state" ng-click="toggleVisibility()">&#9835</div>' +
+								'<div ng-bind="status">' +
+								'</div>' +	
 								'<div ng-show="data.length > 0">' + 
 									'<div buttonbar></div>' + 
 									'<div datatable></div>' +
 									'<div buttonbar></div>' +
-								'</div>' +
-								'<div ng-show="data.length == 0" ng-bind="status">' +
-								'</div>' +		 
+								'</div>' +									 
 							'</div>'
 							);
 
@@ -42,8 +42,9 @@
 	 */
 	
 	App.constant('MessageBundle', {
-		searching : 'Searching for Spotify songs',
-		notFound : 'No matching Spotify songs found'
+		searching : 'Searching for Spotify tracks',
+		notFound : 'No matching Spotify tracks found',
+		found : 'Tracks on Spotify'
 	});
 
 	App.factory('SpotifyFactory', function($http){
@@ -187,6 +188,7 @@
 			},
 			_getData = function(query){
 				$scope.state = 'is-searching';
+				$scope.status = MessageBundle.searching;
 				SpotifyFactory.getData(query)
 					.success(function(data){
 
@@ -203,7 +205,7 @@
 								_newData.push(_item);
 				            }
 				            $scope.data = _newData;
-				            $scope.message = MessageBundle.searching;
+				            $scope.status = MessageBundle.found;
 				            $scope.state = 'is-success';			            
 			            }
 

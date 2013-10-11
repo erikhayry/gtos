@@ -17,7 +17,7 @@
     {
       "matches": ["http://grooveshark.com/*","https://grooveshark.com/*"],
       "js" : ["js/angular/angular.min.js", "js/content.js"],
-      "css" : ["css/message.css"]
+      "css" : ["css/gToS.css"]
     }
   ],
   "web_accessible_resources": [
