@@ -1,0 +1,244 @@
+/*
+	mixins
+ */
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@mixin animation ($name, $duration, $count) {
+	-webkit-animation-name: $name;
+	-webkit-animation-duration: $duration;
+	-webkit-animation-iteration-count: $count;
+
+	animation-name: $name;
+	animation-duration: $duration;
+	animation-iteration-count: $count;
+}
+
+/*
+	includes
+ */
+
+@include keyframes(pulse-searching) {
+	0% {
+		color: white;
+	}
+	50% {
+		color: orange;
+	}
+  100% {
+		color: white;
+	}
+}
+
+@include keyframes(pulse-success) {
+	0% {
+		color: white;
+	}
+	50% {
+		color: #7ab800;
+	}
+  100% {
+		color: white;
+	}
+}
+
+@include keyframes(pulse-no-success) {
+	0% {
+		color: white;
+	}
+	50% {
+		color: red;
+	}
+  100% {
+		color: white;
+	}
+}
+
+//wrapping everything in an id to add specificity
+#gToS{
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*
+	settings
+ */
+
+$font-color-primary : #FCFCFC;
+$font-color-inactive : #7A7A7A;
+
+$background-color : #222;
+$border-color : #3A3A3A;
+
+$cell-spacing : 5px;
+
+/*
+	directives
+ */
+
+%button{
+	border: none;
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	color: $font-color-inactive;
+	font-size: 8px;
+	position: relative;
+	top: -2px;
+	&.is-active{
+		color: $font-color-primary;
+	}	
+}
+
+
+/*
+	layout
+ */
+
+&.layout-box{
+	position: fixed;
+	background-color: $background-color;
+	padding: 25px;
+	width: 600px;
+	color: $font-color-primary;
+	font-size: 13px;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	letter-spacing: 1px;
+	box-sizing: border-box;		
+	top: 60px;
+	min-height: 72px;
+	border: 1px solid $border-color;
+	border-left: none;
+	transition: left 1s ease;
+	left: -600px;
+	&.is-visible{
+		left: 0;
+	}
+}
+
+/*
+	modules
+ */
+
+//module data table
+.m-data-table{
+	margin: 20px 0;
+	width: 100%;
+}	
+
+.m-data-table-heading{
+	cursor: pointer;
+	padding: $cell-spacing;
+	text-align: left;
+	width: 33.333%;
+	text-transform: uppercase;
+}
+
+.m-data-table-heading-btn{
+	@extend %button;
+}
+
+.m-data-table-track{
+	cursor: pointer;
+	td{
+		padding: $cell-spacing;
+		vertical-align: middle;
+		width: 33.333%;
+	}
+	&:nth-child(odd){
+		background-color: #1D1D1D;
+	}
+	&:hover{
+		background-color: rgba(0,0,0,0.6);
+	}
+}
+
+//module pagination bar
+.m-pagination-bar{
+	text-align: center;
+}
+
+.m-pagination-bar-btn{
+	@extend %button;
+}
+
+//module toggler
+.m-toggler{
+	cursor: pointer;
+	position: absolute;
+	right: -40px;
+	font-size: 25px;
+	width: 40px;
+	background-color: $background-color;
+	padding: 10px 0;
+	top: 15px;
+	text-align: center;
+	border-color: $border-color;
+	border-left: none;
+	&:not(.is-visible){
+		&.is-searching{
+			@include animation(pulse-searching, 3s, infinite)
+		}
+		&.is-success{
+			@include animation(pulse-success, 3s, infinite)
+		}
+		&.is-no-success{
+			@include animation(pulse-no-success, 3s, infinite)
+		}
+	}
+}
+
+
+}

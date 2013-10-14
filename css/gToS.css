@@ -1,0 +1,290 @@
+/*
+	mixins
+ */
+/*
+	includes
+ */
+@-webkit-keyframes pulse-searching {
+  /* line 29, ../sass/gToS.scss */
+  0% {
+    color: white;
+  }
+
+  /* line 32, ../sass/gToS.scss */
+  50% {
+    color: orange;
+  }
+
+  /* line 35, ../sass/gToS.scss */
+  100% {
+    color: white;
+  }
+}
+
+@keyframes pulse-searching {
+  /* line 29, ../sass/gToS.scss */
+  0% {
+    color: white;
+  }
+
+  /* line 32, ../sass/gToS.scss */
+  50% {
+    color: orange;
+  }
+
+  /* line 35, ../sass/gToS.scss */
+  100% {
+    color: white;
+  }
+}
+
+@-webkit-keyframes pulse-success {
+  /* line 41, ../sass/gToS.scss */
+  0% {
+    color: white;
+  }
+
+  /* line 44, ../sass/gToS.scss */
+  50% {
+    color: #7ab800;
+  }
+
+  /* line 47, ../sass/gToS.scss */
+  100% {
+    color: white;
+  }
+}
+
+@keyframes pulse-success {
+  /* line 41, ../sass/gToS.scss */
+  0% {
+    color: white;
+  }
+
+  /* line 44, ../sass/gToS.scss */
+  50% {
+    color: #7ab800;
+  }
+
+  /* line 47, ../sass/gToS.scss */
+  100% {
+    color: white;
+  }
+}
+
+@-webkit-keyframes pulse-no-success {
+  /* line 53, ../sass/gToS.scss */
+  0% {
+    color: white;
+  }
+
+  /* line 56, ../sass/gToS.scss */
+  50% {
+    color: red;
+  }
+
+  /* line 59, ../sass/gToS.scss */
+  100% {
+    color: white;
+  }
+}
+
+@keyframes pulse-no-success {
+  /* line 53, ../sass/gToS.scss */
+  0% {
+    color: white;
+  }
+
+  /* line 56, ../sass/gToS.scss */
+  50% {
+    color: red;
+  }
+
+  /* line 59, ../sass/gToS.scss */
+  100% {
+    color: white;
+  }
+}
+
+/* line 65, ../sass/gToS.scss */
+#gToS {
+  /* http://meyerweb.com/eric/tools/css/reset/ 
+     v2.0 | 20110126
+     License: none (public domain)
+  */
+  /* HTML5 display-role reset for older browsers */
+  /*
+  	settings
+   */
+  /*
+  	directives
+   */
+  /*
+  	layout
+   */
+  /*
+  	modules
+   */
+}
+/* line 83, ../sass/gToS.scss */
+#gToS html, #gToS body, #gToS div, #gToS span, #gToS applet, #gToS object, #gToS iframe,
+#gToS h1, #gToS h2, #gToS h3, #gToS h4, #gToS h5, #gToS h6, #gToS p, #gToS blockquote, #gToS pre,
+#gToS a, #gToS abbr, #gToS acronym, #gToS address, #gToS big, #gToS cite, #gToS code,
+#gToS del, #gToS dfn, #gToS em, #gToS img, #gToS ins, #gToS kbd, #gToS q, #gToS s, #gToS samp,
+#gToS small, #gToS strike, #gToS strong, #gToS sub, #gToS sup, #gToS tt, #gToS var,
+#gToS b, #gToS u, #gToS i, #gToS center,
+#gToS dl, #gToS dt, #gToS dd, #gToS ol, #gToS ul, #gToS li,
+#gToS fieldset, #gToS form, #gToS label, #gToS legend,
+#gToS table, #gToS caption, #gToS tbody, #gToS tfoot, #gToS thead, #gToS tr, #gToS th, #gToS td,
+#gToS article, #gToS aside, #gToS canvas, #gToS details, #gToS embed,
+#gToS figure, #gToS figcaption, #gToS footer, #gToS header, #gToS hgroup,
+#gToS menu, #gToS nav, #gToS output, #gToS ruby, #gToS section, #gToS summary,
+#gToS time, #gToS mark, #gToS audio, #gToS video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* line 93, ../sass/gToS.scss */
+#gToS article, #gToS aside, #gToS details, #gToS figcaption, #gToS figure,
+#gToS footer, #gToS header, #gToS hgroup, #gToS menu, #gToS nav, #gToS section {
+  display: block;
+}
+/* line 96, ../sass/gToS.scss */
+#gToS body {
+  line-height: 1;
+}
+/* line 99, ../sass/gToS.scss */
+#gToS ol, #gToS ul {
+  list-style: none;
+}
+/* line 102, ../sass/gToS.scss */
+#gToS blockquote, #gToS q {
+  quotes: none;
+}
+/* line 106, ../sass/gToS.scss */
+#gToS blockquote:before, #gToS blockquote:after,
+#gToS q:before, #gToS q:after {
+  content: '';
+  content: none;
+}
+/* line 110, ../sass/gToS.scss */
+#gToS table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* line 131, ../sass/gToS.scss */
+#gToS .m-data-table-heading-btn, #gToS .m-pagination-bar-btn {
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  color: #7a7a7a;
+  font-size: 8px;
+  position: relative;
+  top: -2px;
+}
+/* line 140, ../sass/gToS.scss */
+#gToS .is-active.m-data-table-heading-btn, #gToS .is-active.m-pagination-bar-btn {
+  color: #fcfcfc;
+}
+/* line 150, ../sass/gToS.scss */
+#gToS.layout-box {
+  position: fixed;
+  background-color: #222222;
+  padding: 25px;
+  width: 600px;
+  color: #fcfcfc;
+  font-size: 13px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  top: 60px;
+  min-height: 72px;
+  border: 1px solid #3a3a3a;
+  border-left: none;
+  transition: left 1s ease;
+  left: -600px;
+}
+/* line 166, ../sass/gToS.scss */
+#gToS.layout-box.is-visible {
+  left: 0;
+}
+/* line 176, ../sass/gToS.scss */
+#gToS .m-data-table {
+  margin: 20px 0;
+  width: 100%;
+}
+/* line 181, ../sass/gToS.scss */
+#gToS .m-data-table-heading {
+  cursor: pointer;
+  padding: 5px;
+  text-align: left;
+  width: 33.333%;
+  text-transform: uppercase;
+}
+/* line 193, ../sass/gToS.scss */
+#gToS .m-data-table-track {
+  cursor: pointer;
+}
+/* line 195, ../sass/gToS.scss */
+#gToS .m-data-table-track td {
+  padding: 5px;
+  vertical-align: middle;
+  width: 33.333%;
+}
+/* line 200, ../sass/gToS.scss */
+#gToS .m-data-table-track:nth-child(odd) {
+  background-color: #1D1D1D;
+}
+/* line 203, ../sass/gToS.scss */
+#gToS .m-data-table-track:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+/* line 209, ../sass/gToS.scss */
+#gToS .m-pagination-bar {
+  text-align: center;
+}
+/* line 218, ../sass/gToS.scss */
+#gToS .m-toggler {
+  cursor: pointer;
+  position: absolute;
+  right: -40px;
+  font-size: 25px;
+  width: 40px;
+  background-color: #222222;
+  padding: 10px 0;
+  top: 15px;
+  text-align: center;
+  border-color: #3a3a3a;
+  border-left: none;
+}
+/* line 231, ../sass/gToS.scss */
+#gToS .m-toggler:not(.is-visible).is-searching {
+  -webkit-animation-name: pulse-searching;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: pulse-searching;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+/* line 234, ../sass/gToS.scss */
+#gToS .m-toggler:not(.is-visible).is-success {
+  -webkit-animation-name: pulse-success;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: pulse-success;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+/* line 237, ../sass/gToS.scss */
+#gToS .m-toggler:not(.is-visible).is-no-success {
+  -webkit-animation-name: pulse-no-success;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: pulse-no-success;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
